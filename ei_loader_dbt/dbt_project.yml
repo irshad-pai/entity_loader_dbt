@@ -16,13 +16,18 @@ model-paths: ["models"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
 seed-paths: ["seeds"]
-macro-paths: ["macros"]
+macro-paths: ["macros","sds_readonly_macros"]
 snapshot-paths: ["snapshots"]
 
 target-path: "target"  # directory which will store compiled SQL files
 clean-targets:         # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
+
+vars:
+  start_epoch: -779979582
+  end_epoch: -700000000
+  skew_factor: 0
 
 
 # Configuring models
@@ -33,6 +38,13 @@ clean-targets:         # directories to be removed by `dbt clean`
 # files using the `{{ config(...) }}` macro.
 models:
   ei_loader_dbt:
+    +pre-hook:
+      - SET spark.shuffle.io.maxRetries = 4;
+      - SET spark.sql.parser.quotedRegexColumnNames = true;
+      - SET `spark.sql.iceberg.merge-schema` = true;
     # Config indicated by + and applies to all files under models/example/
     example:
       +materialized: view
+      +on_table_exists: drop
+      +on_schema_change: append_new_columns
+      +incremental_strategy: insert_overwrite

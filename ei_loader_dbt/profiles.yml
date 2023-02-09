@@ -1,0 +1,10 @@
+ei_loader_dbt:
+  outputs:
+    ddm-spark:
+      type: spark
+      method: thrift
+      host: internal-ae2dd2317c3a84396af335067f747529-2079810153.us-west-2.elb.amazonaws.com
+      port: 10000
+      schema: ei_test
+      threads: 10
+  target: ddm-spark
