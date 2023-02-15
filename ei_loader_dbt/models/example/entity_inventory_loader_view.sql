@@ -1,6 +1,7 @@
 {{ config
     (
-        materialized='view'
+        materialized='view',
+        file_format= "iceberg"
     )
 }}
 {% set skew_factor= var('skew_factor')  %}

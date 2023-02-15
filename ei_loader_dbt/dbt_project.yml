@@ -27,7 +27,7 @@ clean-targets:         # directories to be removed by `dbt clean`
 vars:
   start_epoch: -779979582
   end_epoch: -700000000
-  skew_factor: 0
+  skew_factor: 100
 
 
 # Configuring models
